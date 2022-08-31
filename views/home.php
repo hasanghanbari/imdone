@@ -10,7 +10,7 @@ require_once 'header.php';
         <div class="resume-section-content">
             <h1 class="mb-0">
                 انجام
-                <span class="text-primary">میدم</span>
+                <span class="text-primary">دادم</span>
             </h1>
             <div class="subheading mt-5 mb-5">
                 کاری از تیم برنامه نویسی 

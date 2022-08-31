@@ -60,7 +60,7 @@ class AdminsController
 		}
 		else {
 			// Error Login
-			header('Location: '. GetUrl() .'register');
+			header('Location: '. GetUrl());
 		}
 	}
 }

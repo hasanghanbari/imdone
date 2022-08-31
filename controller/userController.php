@@ -103,8 +103,21 @@ class UsersController
 		$stmt               = $user->Read();
 
 		if ($stmt->rowCount() > 0) {
-			$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			echo json_encode($row);
+			// $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$data = [];
+			while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+				$data [] = [
+					"class_id" 		=> $row['class_id'],
+					"created_at" 	=> $row['created_at'],
+					"first_name" 	=> $row['first_name'],
+					"hash_id" 		=> $row['hash_id'],
+					"im_done" 		=> $row['im_done'],
+					"last_name" 	=> $row['last_name'],
+					"system_number" => $row['system_number'],
+					"updated_at" 	=> G2J($row['updated_at'])
+				];
+			}
+			echo json_encode($data);
 		}
 		else {
 			// Error List

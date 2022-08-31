@@ -1,6 +1,6 @@
 <?php
 $router = new AltoRouter();
-$router->setBasePath('/imdone');
+$router->setBasePath($folder_root);
 
 // VIEW ROUTER
 $router->map( 'GET', '/', 				function() {require __DIR__ . '/views/home.php';});

@@ -1,9 +1,4 @@
 <?php
-function GetUrl()
-{
-    return 'http://localhost/imdone/';
-}
-
 function GetAdmin($redirect = true)
 {
     // Instantiate DB & connect
@@ -90,5 +85,48 @@ function GetUser($code, $redirect = true)
         "system_number" => $row_users['system_number'],
         "im_done"       => $row_users['im_done']
     ];
+}
+
+
+function G2J($date)
+{
+    require_once 'libs/jdf.php';
+	$time_zone="UTC";
+	$d = explode(' ',$date);
+	$d_date = explode('-',$d[0]); //date
+	$d_time = explode(':',$d[1]); //time
+	$year = $d_date[0];
+	$month = $d_date[1];
+	$day = $d_date[2];
+	$hour=$d_time[0];
+	$minute=$d_time[1];
+	$second=$d_time[2];
+	$Jd = gregorian_to_jalali($year,$month,$day);
+	if ($Jd[1]<=6)
+		$timestamp =gmmktime($hour,$minute,$second,$month,$day,$year)+16200;
+	else
+		$timestamp =gmmktime($hour,$minute,$second,$month,$day,$year)+12600;
+	return jdate("Y/m/d H:i:s",$timestamp,$none='',$time_zone);
+}
+
+function J2G($date)
+{
+    require_once 'libs/jdf.php';
+	$time_zone="UTC";
+	$d = explode(' ',$date);
+	$d_date = explode('/',$d[0]); //date
+	$d_time = explode(':',$d[1]); //time
+	$year = $d_date[0];
+	$month = $d_date[1];
+	$day = $d_date[2];
+	$hour=$d_time[0];
+	$minute=$d_time[1];
+	$second=$d_time[2];
+	$Jd = jalali_to_gregorian($year,$month,$day,' - ');
+	if ($Jd[1]<=6)
+		$timestamp =jmktime($hour,$minute,$second,$month,$day,$year)+16200;
+	else
+		$timestamp =jmktime($hour,$minute,$second,$month,$day,$year)+12600;
+	return date("Y/m/d H:i:s",$timestamp,$none='',$time_zone);
 }
 ?>

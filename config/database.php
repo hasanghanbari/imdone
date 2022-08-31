@@ -4,10 +4,15 @@
  */
 class Database
 {
+	// private $dbhost = 'localhost';
+	// private $dbname = 'im_done';
+	// private $dbuname = 'root';
+	// private $dbpass = '';
+
 	private $dbhost = 'localhost';
-	private $dbname = 'im_done';
-	private $dbuname = 'root';
-	private $dbpass = '';
+	private $dbname = 'ghanbari_imdone';
+	private $dbuname = 'ghanbari_imdone';
+	private $dbpass = 'dc5GpG2pDd12@';
 	
 	private $conn;
 	
