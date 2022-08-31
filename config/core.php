@@ -8,12 +8,12 @@ require_once 'controller/adminController.php';
 require_once 'controller/classController.php';
 require_once 'controller/userController.php';
 
-$folder_root = '';
+$folder_root = '/imdone';
 
 function GetUrl()
 {
-    // return 'http://localhost/imdone/';
-    return 'https://done.ghanbari1.ir/';
+    return 'http://localhost/imdone/';
+    // return 'https://done.ghanbari1.ir/';
 }
 
 ?>
