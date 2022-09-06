@@ -32,3 +32,9 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+
+function playSound()
+{
+    var audio = new Audio('assets/sound/alert.mp3');
+    audio.play();
+}

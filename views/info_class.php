@@ -64,18 +64,35 @@ require_once 'header.php';
                 url: "'. GetUrl() .'users/list/'. $class_id .'",
                 success: function(data) {
                     if (data != "") {
-                        $("#users-data").html("");
-                        $.parseJSON(data).forEach(element => {
-                            $("#users-data").append(
-                                \'<div class="col-md-4 mb-3">\' +
-                                \'    <div class="card card-body \'+ (element.im_done == 1 ? \'text-bg-success\' : \'\') +\'">\' +
-                                \'        <h3 class="card-title \'+ (element.im_done == 1 ? \'text-white\' : \'\') +\'">\'+ element.first_name + \' \' + element.last_name +\'</h2>\' +
-                                \'        <p>شماره سیستم: \'+ element.system_number +\'</p>\' +
-                                \'        <p>ساعت انجام: \'+ (element.im_done == 1 ? element.updated_at.split(" ")[1] : \'انجام نشده\') +\'</p>\' +
-                                \'    </div>\' +
-                                \'</div>\'
-                            )
-                        });
+                        if ($("#users-data").html() == "") {
+                            $.parseJSON(data).forEach(element => {
+                                checkAlert(element.im_done);
+                                $("#users-data").append(
+                                    \'<div class="col-md-4 mb-3" id="element-\'+ element.hash_id +\'">\' +
+                                    \'    <div class="card card-body \'+ (element.im_done == 1 ? \'text-bg-success\' : \'\') +\'" id="card">\' +
+                                    \'        <h3 class="card-title \'+ (element.im_done == 1 ? \'text-white\' : \'\') +\'" id="title">\'+ element.first_name + \' \' + element.last_name +\'</h2>\' +
+                                    \'        <p>شماره سیستم: \'+ element.system_number +\'</p>\' +
+                                    \'        <p id="done-time">ساعت انجام: \'+ (element.im_done == 1 ? element.updated_at.split(" ")[1] : \'انجام نشده\') +\'</p>\' +
+                                    \'    </div>\' +
+                                    \'</div>\'
+                                )
+                            });
+                        }
+                        else {
+                            $.parseJSON(data).forEach(element => {
+                                checkAlert(element.im_done);
+                                if (element.im_done == 1) {
+                                    $(\'#element-\'+ element.hash_id +\' #card\').addClass("text-bg-success");
+                                    $(\'#element-\'+ element.hash_id +\' #title\').addClass("text-white");
+                                    $(\'#element-\'+ element.hash_id +\' #done-time\').html(\'ساعت انجام: \'+ element.updated_at.split(" ")[1]);
+                                }
+                                else {
+                                    $(\'#element-\'+ element.hash_id +\' #card\').removeClass("text-bg-success");
+                                    $(\'#element-\'+ element.hash_id +\' #title\').removeClass("text-white");
+                                    $(\'#element-\'+ element.hash_id +\' #done-time\').html("ساعت انجام: انجام نشده ");
+                                }
+                            });
+                        }
                     }
                 }
 
@@ -87,7 +104,18 @@ require_once 'header.php';
     }
     if ($admin_login) {
         echo'
+        function checkAlert(imdone) {
+            if (imdone == 1) {
+                const alert = localStorage.getItem("alert");
+                if (!alert) {
+                    var audio = new Audio("assets/sound/alert.mp3");
+                    audio.play();
+                    localStorage.setItem("alert", true);
+                }
+            }
+        }
         function resetAll() {
+            localStorage.removeItem("alert");
             $.ajax({
                 type: "POST",
                 url: "'. GetUrl() .'users/undone",
@@ -104,6 +132,9 @@ require_once 'header.php';
     }
     if ($user_login) {
         echo'
+        function checkAlert(imdone) {
+            // hi
+        }
         function done() {
             $.ajax({
                 type: "POST",
