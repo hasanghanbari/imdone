@@ -15,6 +15,7 @@ require_once 'header.php';
                 if ($admin_login) {
                     echo '
                         <button class="btn btn-success" onclick="resetAll()">دوباره</button>
+                        <button class="btn btn-warning" onclick="playSound()">تست صدا</button>
                     ';
                 }
                 if ($user_login) {
@@ -64,23 +65,9 @@ require_once 'header.php';
                 url: "'. GetUrl() .'users/list/'. $class_id .'",
                 success: function(data) {
                     if (data != "") {
-                        if ($("#users-data").html() == "") {
-                            $.parseJSON(data).forEach(element => {
-                                checkAlert(element.im_done);
-                                $("#users-data").append(
-                                    \'<div class="col-md-4 mb-3" id="element-\'+ element.hash_id +\'">\' +
-                                    \'    <div class="card card-body \'+ (element.im_done == 1 ? \'text-bg-success\' : \'\') +\'" id="card">\' +
-                                    \'        <h3 class="card-title \'+ (element.im_done == 1 ? \'text-white\' : \'\') +\'" id="title">\'+ element.first_name + \' \' + element.last_name +\'</h2>\' +
-                                    \'        <p>شماره سیستم: \'+ element.system_number +\'</p>\' +
-                                    \'        <p id="done-time">ساعت انجام: \'+ (element.im_done == 1 ? element.updated_at.split(" ")[1] : \'انجام نشده\') +\'</p>\' +
-                                    \'    </div>\' +
-                                    \'</div>\'
-                                )
-                            });
-                        }
-                        else {
-                            $.parseJSON(data).forEach(element => {
-                                checkAlert(element.im_done);
+                        $.parseJSON(data).forEach(element => {
+                            checkAlert(element.im_done);
+                            if ($(\'#element-\'+ element.hash_id).html()) {
                                 if (element.im_done == 1) {
                                     $(\'#element-\'+ element.hash_id +\' #card\').addClass("text-bg-success");
                                     $(\'#element-\'+ element.hash_id +\' #title\').addClass("text-white");
@@ -91,8 +78,19 @@ require_once 'header.php';
                                     $(\'#element-\'+ element.hash_id +\' #title\').removeClass("text-white");
                                     $(\'#element-\'+ element.hash_id +\' #done-time\').html("ساعت انجام: انجام نشده ");
                                 }
-                            });
-                        }
+                            }
+                            else {
+                                $("#users-data").append(
+                                    \'<div class="col-md-4 mb-3" id="element-\'+ element.hash_id +\'">\' +
+                                    \'    <div class="card card-body" id="card">\' +
+                                    \'        <h3 class="card-title" id="title">\'+ element.first_name + \' \' + element.last_name +\'</h2>\' +
+                                    \'        <p>شماره سیستم: \'+ element.system_number +\'</p>\' +
+                                    \'        <p id="done-time">ساعت انجام: انجام نشده</p>\' +
+                                    \'    </div>\' +
+                                    \'</div>\'
+                                )
+                            }
+                        });
                     }
                 }
 
@@ -108,14 +106,12 @@ require_once 'header.php';
             if (imdone == 1) {
                 const alert = localStorage.getItem("alert");
                 if (!alert) {
-                    var audio = new Audio("assets/sound/alert.mp3");
-                    audio.play();
+                    playSound();
                     localStorage.setItem("alert", true);
                 }
             }
         }
         function resetAll() {
-            localStorage.removeItem("alert");
             $.ajax({
                 type: "POST",
                 url: "'. GetUrl() .'users/undone",
@@ -123,7 +119,7 @@ require_once 'header.php';
                     code: '. $class_code .'
                 },
                 success: function(data) {
-                    console.log(data);
+                    localStorage.removeItem("alert");
                     getUsers();
                 }
     
