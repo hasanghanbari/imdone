@@ -74,7 +74,8 @@ class UsersController
 		// Get User Data
 		$user_data = GetUser($code, false);
 
-        $user->id		= $user_data['id'];
+        $user->id			= $user_data['id'];
+        $user->updated_at	= date('Y-m-d h:i:s');
         
         // create user
         if ($user->Done()) {
@@ -114,7 +115,7 @@ class UsersController
 					"im_done" 		=> $row['im_done'],
 					"last_name" 	=> $row['last_name'],
 					"system_number" => $row['system_number'],
-					"updated_at" 	=> G2J($row['updated_at'])
+					"updated_at" 	=> $row['updated_at']
 				];
 			}
 			echo json_encode($data);

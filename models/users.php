@@ -13,6 +13,8 @@ class Users
 	public $system_number;
 	public $im_done;
 	public $class_id;
+	public $created_at;
+	public $updated_at;
     
 	// constructor DB
 	public function __construct($db)
@@ -74,7 +76,8 @@ class Users
 		// Update query
 		$query = "UPDATE $this->table
 			SET 
-				im_done 	= :im_done
+				im_done 	= :im_done,
+				updated_at 	= :updated_at
 			WHERE
 				id 		    = :id";
 		
@@ -83,10 +86,12 @@ class Users
 
 		// Clean Data
 		$this->im_done 		= htmlspecialchars(strip_tags(1));
+		$this->updated_at	= htmlspecialchars(strip_tags($this->updated_at));
 		$this->id 			= htmlspecialchars(strip_tags($this->id));
 		
 		// Bind Data
 		$stmt->bindParam(':im_done'		, $this->im_done);
+		$stmt->bindParam(':updated_at'	, $this->updated_at);
 		$stmt->bindParam(':id'			, $this->id);
 		
 		// Execute query
