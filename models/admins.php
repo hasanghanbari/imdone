@@ -3,7 +3,7 @@ class Admins
 {
     // DB stuf
 	private $conn;
-	private $table = 'admins';
+	private $table = DB_PREFIX.'admins';
 
     // Admins Properties
 	public $id;

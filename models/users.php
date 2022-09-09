@@ -3,7 +3,7 @@ class Users
 {
     // DB stuf
 	private $conn;
-	private $table = 'users';
+	private $table = DB_PREFIX.'users';
 
     // Users Properties
 	public $id;
