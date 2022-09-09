@@ -80,6 +80,11 @@ class ClassController
 		}
 		else {
 			// Error List
+			$data_head = '';
+			$data_body = '
+				<div class="alert alert-warning">لیست کلاس ها خالی است</div>
+			';
+			require 'views/list_class.php';
 		}
 	}
 	
